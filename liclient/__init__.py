@@ -7,6 +7,7 @@ import urllib
 import urlparse
 import oauth2 as oauth
 
+from httplib2 import HttpLib2ErrorWithResponse
 import json
 
 from parsers.lixml import LinkedInXMLParser
@@ -100,6 +101,8 @@ class LinkedInAPI(object):
         client = oauth.Client(self.consumer, user_token)
         resp, content = client.request(url, 'GET')
 
+        if resp.status >= 500:
+            raise HttpLib2ErrorWithResponse(resp.reason, resp, content)
         return resp, json.loads(content)
 
     def get_user_connections(self, access_token, selectors=None, **kwargs):
@@ -120,6 +123,8 @@ class LinkedInAPI(object):
         client = oauth.Client(self.consumer, user_token)
         resp, content = client.request(url, 'GET')
 
+        if resp.status >= 500:
+            raise HttpLib2ErrorWithResponse(resp.reason, resp, content)
         return resp, json.loads(content)
 
     def get_network_updates(self, access_token, **kwargs):
@@ -201,6 +206,9 @@ class LinkedInAPI(object):
                 'Content-Type': 'application/json'
             }
         )
+
+        if resp.status >= 500:
+            raise HttpLib2ErrorWithResponse(resp.reason, resp, content)
         return resp, json.loads(content)
 
     def search(self, access_token, data, field_selector_string=None):
