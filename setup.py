@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='LinkedIn Client Library',
-    version='1.0',
+    version='1.0.1',
     author='Aaron Brenzel',
     author_email='abrenzel@millerresource.com',
     url='12.236.169.60:4830/liclient',
